@@ -1,0 +1,13 @@
+#container {
+    position: relative;
+    width: 600px;
+    height: 300px;
+}
+
+canvas {
+    border: solid 1px;
+    /* background: #000; */
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
