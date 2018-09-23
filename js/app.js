@@ -4,7 +4,7 @@ const canvas = document.getElementById("stage");
 const ctx = canvas.getContext("2d");
 const stageWidth = canvas.width;
 const stageHeight = canvas.height;
-const brick_with = 100;
+const brick_with = 50;
 
 let collection = [];
 let speed = 10;
@@ -69,7 +69,7 @@ class Shoot extends Base {
 }
 //Ship class 
 class Ship extends Base {
-    constructor(bgColor = "red",width = 10,height = 50,canvas)
+    constructor(canvas,width = 10,height = 50,bgColor = "green")
     {
         super();
         this.height = height;
@@ -77,13 +77,13 @@ class Ship extends Base {
         this.bgColor = bgColor;
         this.x = stageWidth/2;
         this.y = stageHeight - this.height - 10;
-        this.bodyCtx = canvas.getContext("2d");
-        this.wingsCtx = canvas.getContext("2d");
+        this.shipCtx = canvas.getContext("2d");
+        // this.wingsCtx = canvas.getContext("2d");
 
     }
     draw(){
-        this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
-        this.bodyCtx.fillStyle = "red";
+        this.shipCtx.fillRect(this.x,this.y,this.width,this.height);
+        this.shipCtx.fillStyle = this.bgColor;
     }
 
     move() {
@@ -104,7 +104,7 @@ class Bricks extends Base {
 
     draw() {
         this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
-        this.fillStyle = this.bgColor;
+        this.bodyCtx.fillStyle = this.bgColor;
     }
     move(key = 0)
     {
@@ -162,25 +162,14 @@ function init()
  */
 function create_bricks()
 {
-    total = (stageWidth/brick_with)  - 1;
-    for(let i = 0; i < total; i ++)
-    {
-        if(i%2==0)
-        {
-            const b = new Bricks(canvas,i*brick_with+50,stageHeight/2);
-            collection.push(b);
-        }
-
-    }
-    for(let i = 0; i < total; i ++)
-    {
-        if(i%2!=0)
-        {
-            const b = new Bricks(canvas,(i*brick_with/2)+50,stageHeight/2+20,"blue");
-            collection.push(b);
-        }
-
-    }
+    [100,300,500].forEach((posX,index) => {
+        const b = new Bricks(canvas,posX,stageHeight/2,"red");
+        collection.push(b);
+    });
+    [75,75+brick_with,300-50-25+brick_with,300-50+brick_with,300-50+brick_with+25,500-50-25+brick_with,500-50+brick_with,500-50+brick_with+25].forEach((posX,index) => {
+        const b = new Bricks(canvas,posX,stageHeight/2+15,"blue");
+        collection.push(b);
+    });
     
     
 }
@@ -196,7 +185,7 @@ function shoot()
 
 
 //Set Ship 
-const ship = new Ship("blue",10,40,canvas);
+const ship = new Ship(canvas,10,40);
 init();
 
 /**
