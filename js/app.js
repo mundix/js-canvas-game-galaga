@@ -6,10 +6,13 @@ const stageWidth = c.width;
 const stageHeight = c.height;
 
 let collection = [];
-let speed = 5;
-let offset = 5;
+let speed = 10;
+let offset = 2;
 
-ctx.clearRect(0,0,stageWidth,stageHeight);
+let dropCounter = 0;
+let dropInterval = 1000; //milliseconds
+let lastTime = 0;
+
 // ctx.scale(10,10);
 /**
  * Classes
@@ -19,7 +22,7 @@ class Base {
         
     }
 }
-
+//Shoot Class
 class Shoot extends Base {
     constructor(size = 10,bgColor = "black",canvas) {
         super();
@@ -47,19 +50,25 @@ class Shoot extends Base {
             this.shoot.stroke();
     }
 
-    collision()
+    collision(key)
     {
+        //if hits the stage above
         if(this.y < 0)
+        {
+            collection[key] = null;
             delete this;
+            delete collection[key];
+        }
     }
 
-    move() {
-        this.y -= speed /100;
+    move(key = 0) {
+        this.y -= speed ;
+        this.collision(key);
     }
 }
-
+//Ship class 
 class Ship extends Base {
-    constructor(bgColor = "blue",width = 10,height = 50,canvas)
+    constructor(bgColor = "red",width = 10,height = 50,canvas)
     {
         super();
         this.height = height;
@@ -73,20 +82,16 @@ class Ship extends Base {
     }
     draw(){
         this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
-        this.bodyCtx.fillStyle = this.bgColor;
-
-        this.wingsCtx.fillRect(this.x+10,this.y+20,this.width,this.height-20);
-        this.wingsCtx.fillRect(this.x-10,this.y+20,this.width,this.height-20);
-        this.wingsCtx.fillStyle = "red";
+        this.bodyCtx.fillStyle = "red";
     }
 
     move() {
-        // this.y -= speed;
     }
 }
 /**
  * Functions
  */
+
 function collision()
 {
 
@@ -97,9 +102,9 @@ function collision()
 function draw()
 {
     ctx.clearRect(0,0,stageWidth,stageHeight);
-    collection.forEach((obj,x) => {
+    collection.forEach((obj,key) => {
         obj.draw();
-        obj.move();
+        obj.move(key);
     })
     ship.draw();
 }
@@ -107,17 +112,16 @@ function draw()
 /**
  * Animate
  */
-function frame() 
+function frame(time = 0) 
 {
-    // ball.draw();
-    // collection.forEach((obj,x) => {
-    //     obj.draw();
-    //     obj.move();
-    // })
+    const deltaTime = time - lastTime;
+    lastTime = time;
+    dropCounter += deltaTime;
+    if(dropCounter > dropInterval) {
+        draw();
+    }
     
-    draw();
-    setInterval(frame,10);
-    // requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
 }
 /**
  * Start Play
@@ -137,35 +141,24 @@ function shoot()
     collection.push(shoot);
 }
 // Set objs
-// let loops = Math.floor(Math.random() * 500);
-// console.log(loops);
-// for(let i = 0; i < loops; i++)
-// {
-    // const shoot = new Shoot(3,"red");
-    // collection.push(shoot);
-// }
 
-// const shoot1 = new Shoot(3,"red");
-// const shoot2 = new Shoot(3,"green");
-// collection.push(shoot1);
-// collection.push(shoot2);
+
+//Set Ship 
 const ship = new Ship("blue",10,50,c);
 init();
 
 document.addEventListener('keydown',event => {
-    console.log(event.keyCode);
-    
+    // console.log(event.keyCode);
     if(event.keyCode === 32)
     {
         shoot();
     }
-    if(event.keyCode === 37){
+    if(event.keyCode === 37){ //move to the right
         ship.x-=speed*offset;
-        
-    }else if(event.keyCode === 39){ //izq
+    }else if(event.keyCode === 39){ //move to the left
         ship.x+=speed*offset;
     }
 
-    // ctx.rotate(0.17);
+    // ship.ctx.rotate(0.17);
     
 });
