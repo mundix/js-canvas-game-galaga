@@ -4,6 +4,7 @@ const canvas = document.getElementById("stage");
 const ctx = canvas.getContext("2d");
 const stageWidth = canvas.width;
 const stageHeight = canvas.height;
+const brick_with = 100;
 
 let collection = [];
 let speed = 10;
@@ -22,10 +23,11 @@ class Base {
     collision(obj) {
         
     }
+    
 }
 //Shoot Class
 class Shoot extends Base {
-    constructor(size = 10,bgColor = "black",canvas) {
+    constructor(size = 10,bgColor = "#fff",canvas) {
         super();
         this.size = size || 25;
         
@@ -87,6 +89,29 @@ class Ship extends Base {
     move() {
     }
 }
+
+//Bricks class
+class Bricks extends Base {
+    constructor (canvas,x=0,y=0,bgColor = "blue") {
+        super();
+        this.width = brick_with;
+        this.height = 10;
+        this.bodyCtx = canvas.getContext("2d");
+        this.x = x;
+        this.y = y; 
+        this.bgColor = bgColor;
+    }
+
+    draw() {
+        this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
+        this.fillStyle = this.bgColor;
+    }
+    move(key = 0)
+    {
+        
+    }
+}
+
 /**
  * Functions
  */
@@ -129,13 +154,41 @@ function init()
 {
     // ship.draw();
     // collection.push(ship);
+    create_bricks();
     frame();   
+}
+/**
+ * Build the bricks on the wall  by loop
+ */
+function create_bricks()
+{
+    total = (stageWidth/brick_with)  - 1;
+    for(let i = 0; i < total; i ++)
+    {
+        if(i%2==0)
+        {
+            const b = new Bricks(canvas,i*brick_with+50,stageHeight/2);
+            collection.push(b);
+        }
+
+    }
+    for(let i = 0; i < total; i ++)
+    {
+        if(i%2!=0)
+        {
+            const b = new Bricks(canvas,(i*brick_with/2)+50,stageHeight/2+20,"blue");
+            collection.push(b);
+        }
+
+    }
+    
+    
 }
 
 // Game functions 
 function shoot()
 {
-    const shoot = new Shoot(3,"black",canvas);
+    const shoot = new Shoot(3,"#fff",canvas);
     shoot.x = ship.x+ ship.width/2; //position of the ship
     collection.push(shoot);
 }
@@ -146,6 +199,9 @@ function shoot()
 const ship = new Ship("blue",10,40,canvas);
 init();
 
+/**
+ * Constrols <- (move to left) space (Shoot) (move to right)->
+ */
 document.addEventListener('keydown',event => {
     // console.log(event.keyCode);
     if(event.keyCode === 32)
