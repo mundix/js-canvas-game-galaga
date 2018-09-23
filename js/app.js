@@ -24,11 +24,32 @@ let lastTime = 0;
  */
 class Base {
     collision(obj) {
-        if(this.y > obj.y && this.y < obj.y + obj.height
-            && this.x > obj.x && this.x < obj.x + obj.width
+
+        /**     this.x > obj.x && this.x < obj.x + obj.width
+         * 0,0  areaX Between Obj.x and Obj.x + Width
+         * + ----------->
+         * |           | 
+         * |           |  areaY Between Obj.y and Obj.y + Height 
+         * |           |
+         * V           |
+         *  -----------
+         *              x,y
+         *  this.y > obj.y && this.y < obj.y + stageHight
+         */
+        if(this.x >= obj.x && this.x <= obj.x + obj.width)
+            console.log("X collision area");
+           console.log(obj.y,obj.y + obj.height);
+        if(this.y >= obj.y && this.y <= obj.y + obj.height )
+            console.log("Y collision area",this.y);
+
+        if(
+            (this.y >= obj.y && this.y <= obj.y + obj.height  //Vertical Collision
+            && 
+            this.x >= obj.x && this.x <= obj.x + obj.width)
             )
         {
-
+            console.log("Collide");   
+            document.getElementById("shootY").value = this.y;
             return true;
         }else{
             // console.log("collisin");
@@ -151,11 +172,11 @@ function collision()
             {
                 if(shoot.collision(brick))
                 {
-                    canvas.style.backgroundColor = "white";
-                    shoot.destroy(key);
-                    setInterval(() =>{
-                        canvas.style.backgroundColor = "black";
-                    },100);
+                    // canvas.style.backgroundColor = "white";
+                    shoot.destroy(shootKey);
+                    // setInterval(() =>{
+                        // canvas.style.backgroundColor = "black";
+                    // },100);
                 }
 
             }
@@ -208,7 +229,7 @@ function init()
  */
 function create_bricks()
 {
-    const offset = 5;
+    const offset = 5;   
     //55 +brick_with + offset
     [55 ].forEach((posX,index) => {
         const b = new Bricks(canvas,posX,stageHeight/2,"yellow");
