@@ -4,7 +4,7 @@ const canvas = document.getElementById("stage");
 const ctx = canvas.getContext("2d");
 const stageWidth = canvas.width;
 const stageHeight = canvas.height;
-const brick_with = 50;
+const brick_with = 25;
 const ship_img = document.getElementById("ship_image");
 
 let collection = [];
@@ -28,9 +28,19 @@ class Base {
             && this.x > obj.x && this.x < obj.x + obj.width
             )
         {
+
             return true;
+        }else{
+            // console.log("collisin");
+
+            return false;
         }
-        return false;
+    }
+    destroy(key)
+    {
+        collectionShoots[key] = null;
+        delete this;
+        delete collectionShoots[key];
     }
     
 }
@@ -39,15 +49,10 @@ class Shoot extends Base {
     constructor(size = 10,bgColor = "#fff",canvas) {
         super();
         this.size = size || 25;
-        
-        // this.x = Math.floor(Math.random() *(stageWidth - this.size));
         this.x = stageWidth/2;
-        // this.y = Math.floor(Math.random() *(stageHeight - this.size));
         this.y = stageHeight - 10;
         this.bgColor = bgColor;
         this.shoot = canvas.getContext("2d");
-        // this.xdir = speed;
-        // this.ydir = speed;
     }
     draw(){
         this.shoot.beginPath();
@@ -67,28 +72,9 @@ class Shoot extends Base {
         }
     }
 
-    // collision(key,obj = null)
-    // {
-        // if(obj != null)
-        // {
-        //     if(this.y > obj.y && this.y < obj.y + obj.height
-        //        && this.x > obj.x && this.x < obj.x + obj.width
-        //         )
-        //     {
-        //         this.destroy(key);
-        //     }
-        // }
-
-    // }
-
-    destroy(key)
-    {
-        collectionShoots[key] = null;
-        delete this;
-        delete collectionShoots[key];
-    }
-
     move(key = 0) {
+        document.getElementById("shootX").value = this.x;
+        document.getElementById("shootY").value = this.y;
         this.y -= speed ;
         this.verticalCollision(key);
     }
@@ -114,7 +100,7 @@ class Ship extends Base {
     horizontalCollision(){
         // Stage Collision
         if(this.x <= 0 ){
-            this.x = 10;
+            this.x = 2;
         }
         if(this.x >= stageWidth - this.width) {
             this.x = stageWidth - this.width;
@@ -124,8 +110,6 @@ class Ship extends Base {
     move() {
         this.horizontalCollision();
     }
-
-
 }
 
 //Bricks class
@@ -143,6 +127,9 @@ class Bricks extends Base {
     draw() {
         this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
         this.bodyCtx.fillStyle = this.bgColor;
+
+        document.getElementById("brickX").value = this.x;
+        document.getElementById("brickY").value = this.y;
     }
     move(key = 0)
     {
@@ -158,17 +145,17 @@ class Bricks extends Base {
  */
 function collision()
 {
-    collectionShoots.forEach((shoot,key)=>{
-        collectionBricsk.forEach((brick,index) => {
-            if(key!= index)
+    collectionShoots.forEach((shoot,shootKey)=>{
+        collectionBricsk.forEach((brick,brickKey) => {
+            if(shootKey!= brickKey)
             {
                 if(shoot.collision(brick))
                 {
-                    document.getElementById("stage").style.backgroundColor = "white";
+                    canvas.style.backgroundColor = "white";
                     shoot.destroy(key);
                     setInterval(() =>{
-                        document.getElementById("stage").style.backgroundColor = "black";
-                    },200);
+                        canvas.style.backgroundColor = "black";
+                    },100);
                 }
 
             }
@@ -195,7 +182,7 @@ function draw()
 }
 
 /**
- * Animate
+ * Animated Frame
  */
 function frame(time = 0) 
 {
@@ -206,7 +193,6 @@ function frame(time = 0)
         draw();
         collision();
     }
-    
     requestAnimationFrame(frame);
 }
 /**
@@ -214,8 +200,6 @@ function frame(time = 0)
  */
 function init() 
 {
-    // ship.draw();
-    // collection.push(ship);
     create_bricks();
     frame();   
 }
@@ -224,14 +208,17 @@ function init()
  */
 function create_bricks()
 {
-    [100,300,500].forEach((posX,index) => {
-        const b = new Bricks(canvas,posX,stageHeight/2,"red");
+    const offset = 5;
+    //55 +brick_with + offset
+    [55 ].forEach((posX,index) => {
+        const b = new Bricks(canvas,posX,stageHeight/2,"yellow");
+        console.log(b.x);
         collectionBricsk.push(b);
     });
-    [75,75+brick_with,300-50-25+brick_with,300-50+brick_with,300-50+brick_with+25,500-50-25+brick_with,500-50+brick_with,500-50+brick_with+25].forEach((posX,index) => {
-        const b = new Bricks(canvas,posX,stageHeight/2+15,"blue");
-        collectionBricsk.push(b);
-    });
+    // [25,25+brick_with + offset].forEach((posX,index) => {
+    //     const b = new Bricks(canvas,posX,stageHeight/2+15);
+    //     collectionBricsk.push(b);
+    // });
     
     
 }
