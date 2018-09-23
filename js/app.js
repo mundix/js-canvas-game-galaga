@@ -83,7 +83,7 @@ class Base {
 }
 //Shoot Class
 class Shoot extends Base {
-    constructor(size = 10,bgColor = "#fff",canvas) {
+    constructor(canvas,size = 10,bgColor = "#fff") {
         super();
         this.size = size || 25;
         this.x = stageWidth/2;
@@ -192,34 +192,59 @@ class Alien extends Base {
         else
             this.img = null;
         this.size = type? 50:90;
+        this.type = type;
         this.alienCtx = canvas.getContext("2d");
+        this.randN = this.getRandomN();
+        console.log(this.randN);
+
     }
 
     draw() 
     {   
         if(this.img !== null)
-        {
-           ; 
             this.alienCtx.drawImage(this.img, this.x,this.y,this.size,this.size);
-        }
-
     }
 
     horizontalCollision()
     {
         if(this.x  >= (stageWidth - this.size ) )
+        {
             this.xdir = -this.xdir;
+            
+        }
         if(this.x <= 0)
+        {
             this.xdir = -this.xdir;
+            
+        }
+        if(this.x  >= (stageWidth - this.size )  || this.x <= 0)
+        {
+            var interval = setInterval(()=>{
+                this.randN = this.getRandomN();
+                this.xdir = -this.xdir;
+                clearInterval(interval);
+            },this.randN);
+        }
+
+
     }
     move(key = 0){
-        // if(this.type == 0)
+        if(this.type == 0)
         {
             this.x += this.xdir * 0.1 ;
             
         }
+        
+        
+            // this.xdir = - this.xdir;
         this.horizontalCollision();
         // document.getElementById("scoreboard-input").value = this.x;
+    }
+
+    getRandomN()
+    {
+        
+        return this.randN = Math.floor(Math.random()*1000*10);
     }
 }
 /**
@@ -354,14 +379,13 @@ function create_aliens()
     // Boss 
     const boss = new Alien(canvas,aliensId[0],stageWidth/2,50,0);
     // boss.x = stageWidth/2 - boss.width;
-    console.log(aliensId[0])
     collectionAliens.push(boss);
 }
 
 // Game functions 
 function shoot()
 {
-    const shoot = new Shoot(3,"yellow",canvas);
+    const shoot = new Shoot(canvas,3,"yellow");
     shoot.x = ship.x + ship.width/2; //position of the ship
     shoot.y = ship.y - ship.height/2;
     collectionShoots.push(shoot);
