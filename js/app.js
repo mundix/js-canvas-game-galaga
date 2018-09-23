@@ -26,22 +26,16 @@ class Base {
     collision(obj) {
 
         /**     this.x > obj.x && this.x < obj.x + obj.width
-         * 0,0  areaX Between Obj.x and Obj.x + Width
+         * 0,0  areaX Between Obj.x and Obj.x + Obj.width
          * + ----------->
          * |           | 
-         * |           |  areaY Between Obj.y and Obj.y + Height 
+         * |           |  areaY Between Obj.y and Obj.y + Obj.height 
          * |           |
          * V           |
          *  -----------
          *              x,y
-         *  this.y > obj.y && this.y < obj.y + stageHight
+         *  this.y > obj.y && this.y < obj.y + obj.height
          */
-        if(this.x >= obj.x && this.x <= obj.x + obj.width)
-            console.log("X collision area");
-           console.log(obj.y,obj.y + obj.height);
-        if(this.y >= obj.y && this.y <= obj.y + obj.height )
-            console.log("Y collision area",this.y);
-
         if(
             (this.y >= obj.y && this.y <= obj.y + obj.height  //Vertical Collision
             && 
@@ -57,11 +51,23 @@ class Base {
             return false;
         }
     }
-    destroy(key)
+    destroy(key,type = null)
     {
-        collectionShoots[key] = null;
-        delete this;
-        delete collectionShoots[key];
+        if(type ==="shoot")
+        {
+
+            collectionShoots[key] = null;
+            delete this;
+            delete collectionShoots[key];
+        }
+        if(type ==="brick")
+        {
+
+            collectionBricsk[key] = null;
+            delete this;
+            delete collectionBricsk[key];
+        }
+
     }
     
 }
@@ -172,11 +178,12 @@ function collision()
             {
                 if(shoot.collision(brick))
                 {
-                    // canvas.style.backgroundColor = "white";
-                    shoot.destroy(shootKey);
-                    // setInterval(() =>{
-                        // canvas.style.backgroundColor = "black";
-                    // },100);
+                    canvas.style.backgroundColor = "white";
+                    shoot.destroy(shootKey,"shoot");
+                    setInterval(() =>{
+                        brick.destroy(brickKey,"brick");
+                        canvas.style.backgroundColor = "black";
+                    },100);
                 }
 
             }
@@ -231,7 +238,8 @@ function create_bricks()
 {
     const offset = 5;   
     //55 +brick_with + offset
-    [55 ].forEach((posX,index) => {
+    let i=0;
+    [55,55 +(brick_with + offset)*++i,55 +(brick_with + offset)*++i ].forEach((posX,index) => {
         const b = new Bricks(canvas,posX,stageHeight/2,"yellow");
         console.log(b.x);
         collectionBricsk.push(b);
