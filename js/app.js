@@ -178,7 +178,8 @@ function collision()
             {
                 if(shoot.collision(brick))
                 {
-                    canvas.style.backgroundColor = "white";
+                    // canvas.style.backgroundColor = "#b9b9b9";
+                    canvas.style.backgroundColor = "#bf9595";
                     shoot.destroy(shootKey,"shoot");
                     setInterval(() =>{
                         brick.destroy(brickKey,"brick");
@@ -237,19 +238,24 @@ function init()
 function create_bricks()
 {
     const offset = 5;   
-    //55 +brick_with + offset
-    let i=0;
-    [55,55 +(brick_with + offset)*++i,55 +(brick_with + offset)*++i ].forEach((posX,index) => {
-        const b = new Bricks(canvas,posX,stageHeight/2,"yellow");
-        console.log(b.x);
-        collectionBricsk.push(b);
-    });
-    // [25,25+brick_with + offset].forEach((posX,index) => {
-    //     const b = new Bricks(canvas,posX,stageHeight/2+15);
-    //     collectionBricsk.push(b);
-    // });
-    
-    
+    const limit = stageWidth/brick_with;
+    const limits =[];
+    const positionStart = 15;
+
+    for(let i=0;i<limit;i++) {
+        limits.push(positionStart +(brick_with + offset)*i);
+    }
+    let colors = ["yellow","red","green"];
+    for(let y = 0 ; y < 3 ; y++)
+    {
+        limits.forEach((posX,index) => {
+            if(y%2!=0)
+                posX = posX-25;
+            const b = new Bricks(canvas,posX,stageHeight/2+(y*15),colors[y]);
+            if(b.x> 10 && b.x <= stageWidth - b.width)
+                collectionBricsk.push(b);
+        });
+    }
 }
 
 function create_stars()
