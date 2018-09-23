@@ -65,18 +65,11 @@ class Shoot extends Base {
                 // Verify the heigt
         if(obj != null)
         {
-            // if(this.y < obj.y || this.y > obj.y + obj.height
-                if(this.y > obj.y && this.y < obj.y + obj.height
-                
+            if(this.y > obj.y && this.y < obj.y + obj.height
                && this.x > obj.x && this.x < obj.x + obj.width
                 )
             {
-                console.log("crash correctly ?");
                 this.destroy(key);
-            }else{
-                // console.log("crash");
-                // 
-                
             }
         }
 
