@@ -7,6 +7,8 @@ const stageHeight = canvas.height;
 const brick_with = 50;
 
 let collection = [];
+let collectionShoots = [];
+let collectionBricsk = [];
 let speed = 10;
 let offset = 2;
 
@@ -51,15 +53,40 @@ class Shoot extends Base {
             this.shoot.stroke();
     }
 
-    collision(key)
+    collision(key,obj = null)
     {
         //if hits the stage above
         if(this.y < 0)
         {
-            collection[key] = null;
-            delete this;
-            delete collection[key];
+            this.destroy(key);
         }
+
+        //Object in  question "Shoot"
+                // Verify the heigt
+        if(obj != null)
+        {
+            // if(this.y < obj.y || this.y > obj.y + obj.height
+                if(this.y > obj.y && this.y < obj.y + obj.height
+                
+               && this.x > obj.x && this.x < obj.x + obj.width
+                )
+            {
+                console.log("crash correctly ?");
+                this.destroy(key);
+            }else{
+                // console.log("crash");
+                // 
+                
+            }
+        }
+
+    }
+
+    destroy(key)
+    {
+        collectionShoots[key] = null;
+        delete this;
+        delete collectionShoots[key];
     }
 
     move(key = 0) {
@@ -88,6 +115,8 @@ class Ship extends Base {
 
     move() {
     }
+
+
 }
 
 //Bricks class
@@ -115,10 +144,19 @@ class Bricks extends Base {
 /**
  * Functions
  */
-
+/**
+ * Assume non objs from the collection array normaly non collide
+ */
 function collision()
 {
-
+    collectionShoots.forEach((shoot,key)=>{
+        collectionBricsk.forEach((brick,index) => {
+            if(key!= index)
+            {
+                shoot.collision(key,brick);
+            }
+        });
+    });
 }
 /**
  * 
@@ -126,7 +164,11 @@ function collision()
 function draw()
 {
     ctx.clearRect(0,0,stageWidth,stageHeight);
-    collection.forEach((obj,key) => {
+    collectionShoots.forEach((obj,key) => {
+        obj.draw();
+        obj.move(key);
+    })
+    collectionBricsk.forEach((obj,key) => {
         obj.draw();
         obj.move(key);
     })
@@ -143,6 +185,7 @@ function frame(time = 0)
     dropCounter += deltaTime;
     if(dropCounter > dropInterval) {
         draw();
+        collision();
     }
     
     requestAnimationFrame(frame);
@@ -164,11 +207,11 @@ function create_bricks()
 {
     [100,300,500].forEach((posX,index) => {
         const b = new Bricks(canvas,posX,stageHeight/2,"red");
-        collection.push(b);
+        collectionBricsk.push(b);
     });
     [75,75+brick_with,300-50-25+brick_with,300-50+brick_with,300-50+brick_with+25,500-50-25+brick_with,500-50+brick_with,500-50+brick_with+25].forEach((posX,index) => {
         const b = new Bricks(canvas,posX,stageHeight/2+15,"blue");
-        collection.push(b);
+        collectionBricsk.push(b);
     });
     
     
@@ -179,7 +222,7 @@ function shoot()
 {
     const shoot = new Shoot(3,"#fff",canvas);
     shoot.x = ship.x+ ship.width/2; //position of the ship
-    collection.push(shoot);
+    collectionShoots.push(shoot);
 }
 // Set objs
 
