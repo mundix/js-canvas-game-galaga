@@ -1,5 +1,11 @@
-// export default 'app.js';
-// Variables 
+/**
+ * @author Clemente E. Pichardo <ce.pichardo@gmail.com>
+ * @since 2018-09-22
+ * @name "Galaga Canvas Game"
+ * @description https://github.com/mundix/js-canvas-game-galaga
+ */
+
+// ============ Variables  ====================//
 const canvas = document.getElementById("stage");
 const ctx = canvas.getContext("2d");
 const stageWidth = canvas.width;
@@ -13,14 +19,20 @@ let collectionBricsk = [];
 let speed = 10;
 let offset = 2;
 
+const aliensId = ['alien_boss_img','alien_1_img','alien_2_img'];
+
 // RequestAnimateFreame FPS
 let dropCounter = 0;
 let dropInterval = 1000; //milliseconds
 let lastTime = 0;
 
+// ============ End Variables  ====================//
 // ctx.scale(10,10);
+
 /**
- * Classes
+ * **** *** **** *** **** *** **** *** ****
+ *                  Classes
+ * **** *** **** *** **** *** **** *** ****
  */
 class Base {
     collision(obj) {
@@ -157,8 +169,44 @@ class Bricks extends Base {
     }
 }
 
+//Star Class
+class Star extends Base {
+    constructor()
+    {
+        super();
+        this.x = 0;
+        this.y = 0;
+    }
+}
+
+//Alien Class
+class Alien extends Base {
+    constructor()
+    {
+        super();
+        this.x = 0;
+        this.y = 0;
+    }
+}
 /**
- * Functions
+ * **** *** **** *** **** *** **** *** ****
+ *                  Classes Finale
+ * **** *** **** *** **** *** **** *** ****
+ */
+
+/**
+ * -===== Functions =====- 
+ *       *       *
+ *        *     *
+ *       ********
+ *     ***  **  ***
+ *     ************
+ *   ****************
+ *   ** ********** **
+ *   **  **    **  **
+ *       **    **   
+ *        **  **
+ * -********************
  */
 /**
  * Assume non objs from the collection array normaly non collide
