@@ -14,10 +14,10 @@ const brick_with = 25;
 const ship_img = document.getElementById("ship_image");
 
 let collection = [];
+let collectionAliens = [];
 let collectionShoots = [];
 let collectionBricsk = [];
 let speed = 10;
-let offset = 2;
 
 const aliensId = ['alien_boss_img','alien_1_img','alien_2_img'];
 
@@ -129,7 +129,7 @@ class Ship extends Base {
 
     }
     draw(){
-        this.shipCtx.drawImage(this.img, this.x,this.y,50,50);
+        this.shipCtx.drawImage(this.img, this.x,this.y,40,40 );
     }
 
     horizontalCollision(){
@@ -142,7 +142,7 @@ class Ship extends Base {
         }
     }
 
-    move() {
+    move(key = 0) {
         this.horizontalCollision();
     }
 }
@@ -181,11 +181,45 @@ class Star extends Base {
 
 //Alien Class
 class Alien extends Base {
-    constructor()
+    constructor(canvas,imageId = null,x=0,y=0,type = 1) //type = 1; boss alien type 0 normal
     {
         super();
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
+        this.xdir = speed;
+        if(imageId !== null)
+            this.img = document.getElementById(imageId);
+        else
+            this.img = null;
+        this.size = type? 50:90;
+        this.alienCtx = canvas.getContext("2d");
+    }
+
+    draw() 
+    {   
+        if(this.img !== null)
+        {
+           ; 
+            this.alienCtx.drawImage(this.img, this.x,this.y,this.size,this.size);
+        }
+
+    }
+
+    horizontalCollision()
+    {
+        if(this.x  >= (stageWidth - this.size ) )
+            this.xdir = -this.xdir;
+        if(this.x <= 0)
+            this.xdir = -this.xdir;
+    }
+    move(key = 0){
+        // if(this.type == 0)
+        {
+            this.x += this.xdir * 0.1 ;
+            
+        }
+        this.horizontalCollision();
+        // document.getElementById("scoreboard-input").value = this.x;
     }
 }
 /**
@@ -246,7 +280,13 @@ function draw()
     collectionBricsk.forEach((obj,key) => {
         obj.draw();
         obj.move(key);
-    })
+    });
+
+    collectionAliens.forEach((obj,key) => {
+        obj.draw();
+        obj.move(key);
+    });
+
     ship.draw();
     ship.move();
 }
@@ -270,6 +310,7 @@ function frame(time = 0)
  */
 function init() 
 {
+    create_aliens();
     create_bricks();
     frame();   
 }
@@ -308,11 +349,21 @@ function create_stars()
     }
 }
 
+function create_aliens()
+{
+    // Boss 
+    const boss = new Alien(canvas,aliensId[0],stageWidth/2,50,0);
+    // boss.x = stageWidth/2 - boss.width;
+    console.log(aliensId[0])
+    collectionAliens.push(boss);
+}
+
 // Game functions 
 function shoot()
 {
     const shoot = new Shoot(3,"yellow",canvas);
     shoot.x = ship.x + ship.width/2; //position of the ship
+    shoot.y = ship.y - ship.height/2;
     collectionShoots.push(shoot);
 }
 // Set objs
@@ -323,11 +374,13 @@ const ship = new Ship(canvas);
 init();
 
 /**
+ * Event's listener
  * Constrols <- (move to left) space (Shoot) (move to right)->
  */
 document.addEventListener('keydown',event => {
-    // console.log(event.keyCode);
-    if(event.keyCode === 32)
+    const offset = 2;
+
+    if(event.keyCode === 32) //IF press "space key"
     {
         shoot();
     }
