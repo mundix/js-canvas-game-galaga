@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 const stageWidth = canvas.width;
 const stageHeight = canvas.height;
 const brick_with = 50;
+const ship_img = document.getElementById("ship_image");
 
 let collection = [];
 let collectionShoots = [];
@@ -23,7 +24,13 @@ let lastTime = 0;
  */
 class Base {
     collision(obj) {
-        
+        if(this.y > obj.y && this.y < obj.y + obj.height
+            && this.x > obj.x && this.x < obj.x + obj.width
+            )
+        {
+            return true;
+        }
+        return false;
     }
     
 }
@@ -53,27 +60,26 @@ class Shoot extends Base {
             this.shoot.stroke();
     }
 
-    collision(key,obj = null)
-    {
-        //if hits the stage above
+    verticalCollision(key){
         if(this.y < 0)
         {
             this.destroy(key);
         }
-
-        //Object in  question "Shoot"
-                // Verify the heigt
-        if(obj != null)
-        {
-            if(this.y > obj.y && this.y < obj.y + obj.height
-               && this.x > obj.x && this.x < obj.x + obj.width
-                )
-            {
-                this.destroy(key);
-            }
-        }
-
     }
+
+    // collision(key,obj = null)
+    // {
+        // if(obj != null)
+        // {
+        //     if(this.y > obj.y && this.y < obj.y + obj.height
+        //        && this.x > obj.x && this.x < obj.x + obj.width
+        //         )
+        //     {
+        //         this.destroy(key);
+        //     }
+        // }
+
+    // }
 
     destroy(key)
     {
@@ -84,29 +90,39 @@ class Shoot extends Base {
 
     move(key = 0) {
         this.y -= speed ;
-        this.collision(key);
+        this.verticalCollision(key);
     }
 }
 //Ship class 
 class Ship extends Base {
-    constructor(canvas,width = 10,height = 50,bgColor = "yellow")
+    constructor(canvas,width = 50,height = 50)
     {
         super();
         this.height = height;
         this.width = width;
-        this.bgColor = bgColor;
+        // this.bgColor = bgColor;
         this.x = stageWidth/2;
         this.y = stageHeight - this.height - 10;
         this.shipCtx = canvas.getContext("2d");
-        // this.wingsCtx = canvas.getContext("2d");
+        this.img = ship_img;
 
     }
     draw(){
-        this.shipCtx.fillRect(this.x,this.y,this.width,this.height);
-        this.shipCtx.fillStyle = this.bgColor;
+        this.shipCtx.drawImage(this.img, this.x,this.y,50,50);
+    }
+
+    horizontalCollision(){
+        // Stage Collision
+        if(this.x <= 0 ){
+            this.x = 10;
+        }
+        if(this.x >= stageWidth - this.width) {
+            this.x = stageWidth - this.width;
+        }
     }
 
     move() {
+        this.horizontalCollision();
     }
 
 
@@ -146,13 +162,22 @@ function collision()
         collectionBricsk.forEach((brick,index) => {
             if(key!= index)
             {
-                shoot.collision(key,brick);
+                if(shoot.collision(brick))
+                {
+                    document.getElementById("stage").style.backgroundColor = "white";
+                    shoot.destroy(key);
+                    setInterval(() =>{
+                        document.getElementById("stage").style.backgroundColor = "black";
+                    },200);
+                }
+
             }
         });
     });
+    // document.getElementById("stage").style.backgroundColor = "black";
 }
 /**
- * 
+ * Draw function
  */
 function draw()
 {
@@ -166,6 +191,7 @@ function draw()
         obj.move(key);
     })
     ship.draw();
+    ship.move();
 }
 
 /**
@@ -210,18 +236,27 @@ function create_bricks()
     
 }
 
+function create_stars()
+{
+    const total_stars = Math.floor(Math.random()*500)+500;
+    for(let i = 0; i < total_stars ; i ++)
+    {
+        
+    }
+}
+
 // Game functions 
 function shoot()
 {
-    const shoot = new Shoot(3,"#fff",canvas);
-    shoot.x = ship.x+ ship.width/2; //position of the ship
+    const shoot = new Shoot(3,"yellow",canvas);
+    shoot.x = ship.x + ship.width/2; //position of the ship
     collectionShoots.push(shoot);
 }
 // Set objs
 
 
-//Set Ship 
-const ship = new Ship(canvas,10,40,"yellow");
+//Set the Ship 
+const ship = new Ship(canvas);
 init();
 
 /**
