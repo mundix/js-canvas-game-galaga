@@ -49,6 +49,30 @@ class Shoot extends Base {
     }
 }
 
+class Ship extends Base {
+    constructor(bgColor = "blue",width = 10,height = 50)
+    {
+        super();
+        this.height = height;
+        this.width = width;
+        this.bgColor = bgColor;
+        this.x = stageWidth/2;
+        this.y = stageHeight - this.height - 10;
+        this.ctx = c.getContext("2d");
+
+    }
+    draw(){
+        // ctx.fillRect(this.x,this.y,this.width,this.height);
+        ctx.fillRect(this.x+10,this.y+20,this.width,this.height-20);
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x-10,this.y+20,this.width,this.height-20);
+        ctx.fillStyle = this.bgColor;
+    }
+
+    move() {
+        // this.y -= speed;
+    }
+}
 /**
  * Functions
  */
@@ -73,10 +97,10 @@ function draw()
 function frame() 
 {
     // ball.draw();
-    collection.forEach((obj,x) => {
-        obj.draw();
-        obj.move();
-    })
+    // collection.forEach((obj,x) => {
+    //     obj.draw();
+    //     obj.move();
+    // })
     draw();
     requestAnimationFrame(frame);
 }
@@ -85,6 +109,8 @@ function frame()
  */
 function init() 
 {
+    const ship = new Ship();
+    collection.push(ship);
     frame();   
 }
 
@@ -95,13 +121,13 @@ function shoot()
     collection.push(shoot);
 }
 // Set objs
-let loops = Math.floor(Math.random() * 500);
-console.log(loops);
-for(let i = 0; i < loops; i++)
-{
+// let loops = Math.floor(Math.random() * 500);
+// console.log(loops);
+// for(let i = 0; i < loops; i++)
+// {
     // const shoot = new Shoot(3,"red");
     // collection.push(shoot);
-}
+// }
 
 // const shoot1 = new Shoot(3,"red");
 // const shoot2 = new Shoot(3,"green");
