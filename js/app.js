@@ -89,7 +89,7 @@ class Shoot extends Base {
 }
 //Ship class 
 class Ship extends Base {
-    constructor(canvas,width = 10,height = 50,bgColor = "green")
+    constructor(canvas,width = 10,height = 50,bgColor = "yellow")
     {
         super();
         this.height = height;
@@ -221,7 +221,7 @@ function shoot()
 
 
 //Set Ship 
-const ship = new Ship(canvas,10,40);
+const ship = new Ship(canvas,10,40,"yellow");
 init();
 
 /**
