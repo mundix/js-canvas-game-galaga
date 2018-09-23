@@ -160,7 +160,7 @@ class Alien extends Base {
             this.img = document.getElementById(imageId);
         else
             this.img = null;
-        this.size = type? 50:90;
+        this.size = type? 40:60;
         this.type = type;
         this.alienCtx = canvas.getContext("2d");
         this.randN = this.getRandomN();
