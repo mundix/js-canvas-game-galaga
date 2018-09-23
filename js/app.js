@@ -3,6 +3,9 @@
  * @since 2018-09-22
  * @name "Galaga Canvas Game"
  * @description https://github.com/mundix/js-canvas-game-galaga
+ * 
+ * @see http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
+ * @see https://nickturner.wordpress.com/2013/12/10/galaga-sprite-sheet/
  */
 
 // ============ Variables  ====================//
@@ -232,11 +235,7 @@ class Alien extends Base {
         if(this.type == 0)
         {
             this.x += this.xdir * 0.1 ;
-            
         }
-        
-        
-            // this.xdir = - this.xdir;
         this.horizontalCollision();
         // document.getElementById("scoreboard-input").value = this.x;
     }
@@ -378,8 +377,19 @@ function create_aliens()
 {
     // Boss 
     const boss = new Alien(canvas,aliensId[0],stageWidth/2,50,0);
-    // boss.x = stageWidth/2 - boss.width;
     collectionAliens.push(boss);
+    for(let i=0;i<10; i++)
+    {
+        const alien = new Alien(canvas,aliensId[1],50*i+10,boss.y + boss.size ,1);
+        collectionAliens.push(alien);
+    }
+    for(let i=0;i<5; i++)
+    {
+        const alien = new Alien(canvas,aliensId[2],100*i+80,80 + 50*2 ,1);
+        collectionAliens.push(alien);
+    }
+
+    
 }
 
 // Game functions 
