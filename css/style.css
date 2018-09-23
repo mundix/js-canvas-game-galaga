@@ -11,17 +11,17 @@ canvas {
     top: 0px;
     left: 0px;
 }
-#dashboard {
+#scoreboard {
     /* background: rebeccapurple; */
     text-transform: uppercase;
     color:#fff;
     width: 400px;
     position: relative;
-    left: 250px;
-    bottom:280px;
+    left: 430px;
+    bottom:305px;
     font-family: 'Courier New', Courier, monospace;
 }
-#dashboard input{
+#scoreboard input{
     width: 100px;
     font-size:24px;
     font-family: 'Courier New', Courier, monospace;

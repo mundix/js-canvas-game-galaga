@@ -42,8 +42,6 @@ class Base {
             this.x >= obj.x && this.x <= obj.x + obj.width)
             )
         {
-            console.log("Collide");   
-            document.getElementById("shootY").value = this.y;
             return true;
         }else{
             // console.log("collisin");
@@ -100,8 +98,6 @@ class Shoot extends Base {
     }
 
     move(key = 0) {
-        document.getElementById("shootX").value = this.x;
-        document.getElementById("shootY").value = this.y;
         this.y -= speed ;
         this.verticalCollision(key);
     }
@@ -154,9 +150,6 @@ class Bricks extends Base {
     draw() {
         this.bodyCtx.fillRect(this.x,this.y,this.width,this.height);
         this.bodyCtx.fillStyle = this.bgColor;
-
-        document.getElementById("brickX").value = this.x;
-        document.getElementById("brickY").value = this.y;
     }
     move(key = 0)
     {
