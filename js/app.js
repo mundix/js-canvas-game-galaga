@@ -1,14 +1,15 @@
 // export default 'app.js';
 // Variables 
-const c = document.getElementById("stage");
-const ctx = c.getContext("2d");
-const stageWidth = c.width;
-const stageHeight = c.height;
+const canvas = document.getElementById("stage");
+const ctx = canvas.getContext("2d");
+const stageWidth = canvas.width;
+const stageHeight = canvas.height;
 
 let collection = [];
 let speed = 10;
 let offset = 2;
 
+// RequestAnimateFreame FPS
 let dropCounter = 0;
 let dropInterval = 1000; //milliseconds
 let lastTime = 0;
@@ -38,8 +39,6 @@ class Shoot extends Base {
         // this.ydir = speed;
     }
     draw(){
-        // ctx.fillRect(this.x,this.y,this.size,this.size);
-        
         this.shoot.beginPath();
         this.shoot.arc(
             this.x,
@@ -136,15 +135,15 @@ function init()
 // Game functions 
 function shoot()
 {
-    const shoot = new Shoot(3,"black",c);
-    shoot.x = ship.x; //position of the ship
+    const shoot = new Shoot(3,"black",canvas);
+    shoot.x = ship.x+ ship.width/2; //position of the ship
     collection.push(shoot);
 }
 // Set objs
 
 
 //Set Ship 
-const ship = new Ship("blue",10,50,c);
+const ship = new Ship("blue",10,40,canvas);
 init();
 
 document.addEventListener('keydown',event => {
