@@ -28,7 +28,7 @@ const shipSprite = document.getElementById("ship_image");
 // sy = dy = 150;
 // sw = sh = dw = dh = 300;
 ctx.drawImage(alienSprite, 100,100,alienSprite.width,alienSprite.height,0,0,45,89);
-// ctx.drawImage(shipSprite, 0,0,shipSprite.width,shipSprite.height);
+ctx.drawImage(shipSprite, 0,0,shipSprite.width,shipSprite.height);
 
 // ctx.drawImage(sprite,sx ,sy, sw, sh,dx,dy,dw,dh);
 // ctx.drawImage(sprite,50,50,300,300,50,50,300,300);
