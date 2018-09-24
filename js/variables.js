@@ -13,7 +13,7 @@ let collectionShoots = [];
 let collectionBricsk = [];
 let speed = 10;
 
-const aliensId = ['alien_boss_img','alien_1_img','alien_2_img'];
+const aliensId = ['alien_boss','alien_spawn_1','alien_spawn_2'];
 
 // RequestAnimateFreame FPS
 let dropCounter = 0;

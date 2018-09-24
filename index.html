@@ -7,14 +7,18 @@
     <title>Galaga Canvas</title>
     <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
+<body onload="init()">
     <div id="container">
         <canvas id="stage" width="600" height="500"></canvas>
-        <img src="img/galaga-ship-png-2.png" alt="" id="ship_image" width="50"/>
-        <img src="img/BossGalaga.png" alt="" id="alien_boss_img" width="50"/>
-        <img src="img/alien-1.png" alt="" id="alien_1_img" width="50"/>
-        <img src="img/alien-virus.png" alt="" id="alien_2_img" width="50"/>
-        <img src="img/sprite-aliens-45x89.png" alt="" width="45" height="89"  id="sprite_aliens"/>
+        <img src="img/ship-528x528.png" alt="" id="ship_image" width="50"/>
+        <img src="img/alien-boss-769x768.png" alt="" id="alien_boss" width="50"/>
+        <img src="img/alien-spawn-1-500x500.png" alt="" id="alien_spawn_1" width="50"/>
+        <img src="img/alien-spawn-2-480x411.png" alt="" id="alien_spawn_2" width="50"/>
+        <img src="img/sprite-aliens-45x89.png" alt="" id="aliens_sprite" />
+        <img src="img/millenial-falcon-283x354.png" alt="" id="millenal_falcon" width="50"/>
+        <img src="img/game-galaga-sprite-376x394.png" alt="" id="galaga_sprite" />
+
+
     </div>
     <div id="scoreboard" >
         <p>
@@ -23,6 +27,7 @@
         </p>
         
     </div>
+    <script src="js/libs/jquery-3.3.1.min.js"></script>
     <script src="js/variables.js"></script>
     <script src="js/classes.js"></script>
     <script src="js/functions.js"></script>

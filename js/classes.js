@@ -156,15 +156,16 @@ class Alien extends Base {
         this.x = x;
         this.y = y;
         this.xdir = speed;
+        
         if(imageId !== null)
             this.img = document.getElementById(imageId);
         else
             this.img = null;
+
         this.size = type? 40:60;
         this.type = type;
         this.alienCtx = canvas.getContext("2d");
         this.randN = this.getRandomN();
-        console.log(this.randN);
 
     }
 
@@ -194,8 +195,6 @@ class Alien extends Base {
                 clearInterval(interval);
             },this.randN);
         }
-
-
     }
     move(key = 0){
         if(this.type == 0)
@@ -208,11 +207,47 @@ class Alien extends Base {
 
     getRandomN()
     {
-        
         return this.randN = Math.floor(Math.random()*1000*10);
     }
 }
+/**
+ * Millenial Falcon 
+ */
+class MillenialFalcon extends Base {
+    constructor(x=0,y=0,width = 100,height = 100)
+    {
+        super();
+        this.img = new Image();
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.ydir = speed*0.1;
+        
+    }
 
+    draw() {
+        let image = this.img;
+        let x = this.x;
+        let y = this.y;
+        let width = this.width;
+        let height = this.height;
+        image.onload = function () {
+            ctx.drawImage(image,x,y,width,height);
+        }
+        image.src = "../img/millenial-falcon-283x354.png";
+    }
+
+    move()
+    {   
+        if(this.y <= stageHeight - this.height-10)
+            this.ydir = - this.ydir;
+
+        if(this.y >= stageHeight - 60 -5)
+            this.ydir = - this.ydir;
+        this.y-=this.ydir;
+    }
+}
 /**
  * **** *** **** *** **** *** **** *** ****
  *                  Classes Finale

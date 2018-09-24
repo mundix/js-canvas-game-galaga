@@ -56,9 +56,9 @@ function draw()
         obj.draw();
         obj.move(key);
     });
-
-    ship.draw();
-    ship.move();
+    mf.draw();
+    // ship.draw();
+    // ship.move();
 }
 
 /**
@@ -75,15 +75,7 @@ function frame(time = 0)
     }
     requestAnimationFrame(frame);
 }
-/**
- * Start Play
- */
-function init() 
-{
-    create_aliens();
-    create_bricks();
-    frame();   
-}
+
 /**
  * Build the bricks on the wall  by loop
  */
@@ -142,8 +134,23 @@ function create_aliens()
 function shoot()
 {
     const shoot = new Shoot(canvas,3,"yellow");
-    shoot.x = ship.x + ship.width/2; //position of the ship
-    shoot.y = ship.y - ship.height/2;
+
+    shoot.x = mf.x + mf.width/2; 
+    shoot.y = mf.y - mf.height/2;
+
+    // shoot.x = ship.x + ship.width/2; 
+    // shoot.y = ship.y - ship.height/2;
     collectionShoots.push(shoot);
+}
+
+/**
+ * Start Play
+ */
+function init() 
+{
+    // create_aliens();
+    // create_bricks();
+    frame();   
+    
 }
 // Set objs

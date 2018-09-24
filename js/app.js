@@ -14,62 +14,73 @@
 // const ship = new Ship(canvas);
 // init();
 
-// const spriteImage = new Image();
-// spriteImage.src = "./img/game-galaga-sprite-376x394.png";
-ctx.clearRect(0,0,stageWidth,stageHeight);
-// ctx.fillRect(100,100,100,100);
-// ctx.fillStyle = "blue";
+// let imageSprite = new Image();
+// imageSprite.src = "../img/spritestrip.png";
+// imageSprite.src = "../img/alien-virus.png";
+// console.log(imageSprite.width,);
 
 
-const alienSprite = document.getElementById("sprite_aliens");
-const shipSprite = document.getElementById("ship_image");
-// let sx,sy,sw,sh,dx,dy,dw,dh;
-// sx = dx= 150;
-// sy = dy = 150;
-// sw = sh = dw = dh = 300;
-ctx.drawImage(alienSprite, 100,100,alienSprite.width,alienSprite.height,0,0,45,89);
-ctx.drawImage(shipSprite, 0,0,shipSprite.width,shipSprite.height);
-
-// ctx.drawImage(sprite,sx ,sy, sw, sh,dx,dy,dw,dh);
-// ctx.drawImage(sprite,50,50,300,300,50,50,300,300);
 
 
-// function sprite (options) {
-				
-//     var that = {};
-					
-//     that.context = options.context;
-//     that.width = options.width;
-//     that.height = options.height;
-//     that.image = options.image;
+const mf = new MillenialFalcon(stageWidth/2-50/2,stageHeight-60-10,50,60);
+$(function(){
+    // let millenialFalcon = new Image();
+    // bossAlien = document.getElementById("aliens_sprite");
+    // alienSpawn1 = document.getElementById("aliens_sprite");
 
-//     that.render = function () {
-//         // Draw the animation
-//         that.context.drawImage(
-//            that.image,
-//            0, //sx
-//            0, //sy
-//            that.width,
-//            that.height,
-//            200, // dh
-//            200, // dx
-//            that.width,
-//            that.height);
-//     };
+    // millenialFalcon.onload = function()
+    // {
+    //     // ctx.drawImage(millenialFalcon,0,0,millenialFalcon.width/3,millenialFalcon.height/3);
+    //     width = millenialFalcon.width*0.25;
+    //     height = millenialFalcon.height*0.25;
+    //     ctx.drawImage(millenialFalcon,stageWidth/2,stageHeight-height,width,height);
+    // }
+    // millenialFalcon.src = "../img/millenial-falcon-283x354.png";
 
-//     return that;
-// }
+    
 
-// var ship = sprite({
-//     context: canvas.getContext("2d"),
-//     width: 100,
-//     height: 100,
-//     image: spriteImage
-// });
-// console.log(ship);
-// ship.render();
+    
+    
+    let milenialFalconInterval = setInterval(()=>{
+        // console.log("Move");
+        // ctx.clearRect(0,0,stageWidth,stageHeight);
+        // mf.draw();
+        mf.move();    
+    },100 );
+    
+    
+    
+    // sW = 20;
+    // sH = 20;
+    // dW = 0;
+    // dH = 0;
 
-/**
+    // ctx.drawImage(alienSpawn1, 23, 23,sW ,sW, dW, dH+100,100 ,100); 
+    // ctx.drawImage(alienSpawn1, 0, 23,sW ,sW, dW+5, dH + 5 + 100,100 ,100); 
+    
+    let i = 0;
+    bossAnimate =[23,23,23,23,0,0,0,23,23,23 ];
+    // ctx.drawImage(bossAlien, 23, 0,sW ,sW, dW, dH,100 ,100); ;
+    // ctx.drawImage(bossAlien, 0, 0,sW ,sW, dW+5, dH + 5,100 ,100); 
+    // var interval = setInterval(() => {
+    //     ctx.clearRect(0,0,stageWidth,stageHeight);
+
+    //     // if(i%2==0)
+    //         ctx.drawImage(bossAlien, bossAnimate[i], 0,sW ,sW, dW, dH,100 ,100); 
+    //     // else
+    //         // ctx.drawImage(bossAlien, 0, 0,sW ,sW, dW+5, dH + 5,100 ,100); 
+
+    //     if(i%2==0)
+    //         ctx.drawImage(alienSpawn1, 23, 23,sW ,sW, dW, dH+100,100 ,100);
+    //     else
+    //         ctx.drawImage(alienSpawn1, 0, 23,sW ,sW, dW+5, dH + 5 + 100,100 ,100); 
+
+    //     if(i++===8)
+    //         i=0;
+    // },
+    // 300);
+
+    /**
  * Event's listener
  * Constrols <- (move to left) space (Shoot) (move to right)->
  */
@@ -81,11 +92,16 @@ document.addEventListener('keydown',event => {
         shoot();
     }
     if(event.keyCode === 37){ //move to the right
-        ship.x-=speed*offset;
+        // ship.x-=speed*offset;
+        mf.x-=speed*offset;
     }else if(event.keyCode === 39){ //move to the left
-        ship.x+=speed*offset;
+        // ship.x+=speed*offset;
+        mf.x+=speed*offset;
     }
 
     // ship.ctx.rotate(0.17);
     
 });
+    
+});
+
